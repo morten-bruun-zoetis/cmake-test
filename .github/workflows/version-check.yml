@@ -5,8 +5,8 @@ on:
   pull_request:
 
 jobs:
-  RunTests:
-    name: Run unittests
+  CheckVersionBump:
+    name: Check version bump
     runs-on: ubuntu-latest
     steps:
 
