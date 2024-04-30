@@ -7,12 +7,7 @@ on:
 jobs:
   RunTests:
     name: Run unittests
-    container:
-      image: ${{vars.ZOETIS_DOCKER_REGISTRY}}/${{vars.PLATFORM_DEVELOPMENT_DOCKER_IMAGE}}:latest
-    defaults:
-      run:
-        shell: bash
-    runs-on: vetscan-docker-non-root
+    runs-on: ubuntu-latest
     steps:
 
     - name: Checkout
@@ -21,4 +16,4 @@ jobs:
         fetch-depth: 2
     - name: Get changes
       run: git diff --name-only -r HEAD^1 HEAD
-  
+ 
