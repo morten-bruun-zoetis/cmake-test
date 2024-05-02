@@ -17,3 +17,23 @@ jobs:
     - name: Get changes
       run: git diff --name-only -r HEAD^1 HEAD | grep setup.py
  
+  AdPythonPackageVersionComment:
+    # Only running if it's a PR event
+    if: github.head_ref != ''
+    name: Commenting python package version
+    runs-on: vetscan-docker-non-root
+    steps:
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Python package version
+
+      - name: Create comment if python package version was not updated
+        if: steps.fc.outputs.comment-id == ''
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: Did you remember to update the python package version?
