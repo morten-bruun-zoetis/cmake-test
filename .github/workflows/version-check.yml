@@ -38,12 +38,12 @@ jobs:
       uses: peter-evans/create-or-update-comment@v3
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        body: ${{ env.PYTHON_PACKAGE_VERSION }}
+        body: Create foo
 
     - name: Update comment
       if: steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v3
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        body: ${{ env.PYTHON_PACKAGE_VERSION }}
+        body: Update foo
         edit-mode: replace
