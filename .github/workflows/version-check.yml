@@ -35,14 +35,14 @@ jobs:
         body-includes: Python version check
 
     - name: Create comment
-      if: steps.filter.outputs.changes == 'true' && steps.fc.outputs.comment-id == ''
+      if: steps.filter.outputs.changes == 'false' && steps.fc.outputs.comment-id == ''
       uses: peter-evans/create-or-update-comment@v3
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: ${{inputs.working-directory}} needs version bump (create)
 
     - name: Update comment
-      if: steps.filter.outputs.changes == 'true' && steps.fc.outputs.comment-id != ''
+      if: steps.filter.outputs.changes == 'false' && steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v3
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
