@@ -34,12 +34,19 @@ jobs:
         comment-author: 'github-actions[bot]'
         body-includes: Python version check
 
-    - name: Create comment
+    - name: Create comment bad
       if: steps.filter.outputs.changes == 'false' && steps.fc.outputs.comment-id == ''
       uses: peter-evans/create-or-update-comment@v3
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: **Python Version Check**: ${{inputs.working-directory}} needs version bump (create)
+
+    - name: Create comment good
+      if: steps.filter.outputs.changes == 'true' && steps.fc.outputs.comment-id == ''
+      uses: peter-evans/create-or-update-comment@v3
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: **Python Version Check**: All good
 
     - name: Update comment
       if: steps.filter.outputs.changes == 'false' && steps.fc.outputs.comment-id != ''
