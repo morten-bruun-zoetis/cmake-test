@@ -35,16 +35,16 @@ jobs:
         comment-author: 'github-actions[bot]'
         body-includes: Python package version
 
-      - name: Create comment if no artifact url exists
-        if: steps.fc.outputs.comment-id == ''
-        uses: peter-evans/create-or-update-comment@v3
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: Create comment
+    - name: Create comment if no artifact url exists
+      if: steps.fc.outputs.comment-id == ''
+      uses: peter-evans/create-or-update-comment@v3
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: Create comment
 
-      - name: Create comment if python package version was not updated
-        if: steps.fc.outputs.comment-id == ''
-        uses: peter-evans/create-or-update-comment@v3
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: Update comment
+    - name: Create comment if python package version was not updated
+      if: steps.fc.outputs.comment-id == ''
+      uses: peter-evans/create-or-update-comment@v3
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: Update comment
