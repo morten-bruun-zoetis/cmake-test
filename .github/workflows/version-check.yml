@@ -5,8 +5,6 @@ on:
   pull_request:
 
 jobs:
-  CheckVersionBump:
- 
   AdPythonPackageVersionComment:
 
     # Only running if it's a PR event
