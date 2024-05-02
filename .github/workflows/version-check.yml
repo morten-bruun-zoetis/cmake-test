@@ -18,16 +18,14 @@ jobs:
       with:
         fetch-depth: 2
 
-    - name: Get changes
-      run: |
-        if [[ -z $(git diff --name-only -r HEAD^1 HEAD | grep setup.py)  ]];
-        then
-          echo "PYTHON_PACKAGE_VERSION=Python version check: Did you remember to update the python package version?" >> $GITHUB_ENV;
-        else
-          echo "PYTHON_PACKAGE_VERSION=Python version check: All good!" >> $GITHUB_ENV;
-        fi
-        echo "Changed files in pull request:"
-        echo "$(git diff --name-only -r HEAD^1 HEAD)"
+    - name: Check for changes
+      uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        base: master
+        filters: |
+          changes:
+            - ${{inputs.working-directory}}/setup.py
 
     - name: Find Comment
       uses: peter-evans/find-comment@v2
@@ -38,16 +36,15 @@ jobs:
         body-includes: Python version check
 
     - name: Create comment
-      if: steps.fc.outputs.comment-id == ''
+      if: steps.filter.outputs.changes == 'true' && steps.fc.outputs.comment-id == ''
       uses: peter-evans/create-or-update-comment@v3
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        body: ${{ env.PYTHON_PACKAGE_VERSION }}
+        body: ${{inputs.working-directory}} needs version bump (create)
 
     - name: Update comment
-      if: steps.fc.outputs.comment-id != ''
+      if: steps.filter.outputs.changes == 'true' && steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v3
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
-        body: ${{ env.PYTHON_PACKAGE_VERSION }}
-        edit-mode: replace
+        body: ${{inputs.working-directory}} needs version bump (update)
