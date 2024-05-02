@@ -31,18 +31,19 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-author: 'github-actions[bot]'
-        body-includes: Python package version
+        body-includes: Did you remember
 
-    - name: Create comment if no artifact url exists
+    - name: Create comment
       if: steps.fc.outputs.comment-id == ''
       uses: peter-evans/create-or-update-comment@v3
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: ${{ env.PYTHON_PACKAGE_VERSION }}
 
-    - name: Create comment if python package version was not updated
-      if: steps.fc.outputs.comment-id == ''
+    - name: Update comment
+      if: steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v3
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: ${{ env.PYTHON_PACKAGE_VERSION }}
+	edit-mode: replace
