@@ -6,23 +6,23 @@ on:
 
 jobs:
   CheckVersionBump:
-    name: Check version bump
-    runs-on: ubuntu-latest
-    steps:
-
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 2
-    - name: Get changes
-      run: git diff --name-only -r HEAD^1 HEAD | grep setup.py
  
   AdPythonPackageVersionComment:
+
     # Only running if it's a PR event
     if: github.head_ref != ''
     name: Commenting python package version
-    runs-on: vetscan-docker-non-root
+    runs-on: ubuntu-latest
+    # runs-on: vetscan-docker-non-root
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+        fetch-depth: 2
+      - name: Get changes
+        run: |
+          if [[ -n $(git diff --name-only -r HEAD^1 HEAD | grep setup.py)  ]]; then echo "Yeah"; else echo "Nooo"; fi
+
       - name: Find Comment
         uses: peter-evans/find-comment@v2
         id: fc
