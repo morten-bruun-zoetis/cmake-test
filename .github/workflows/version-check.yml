@@ -32,7 +32,7 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-author: 'github-actions[bot]'
-        body-includes: Python version check
+        body-includes: Python Version Check
 
     - name: Create comment bad
       if: steps.filter.outputs.changes == 'false' && steps.fc.outputs.comment-id == ''
