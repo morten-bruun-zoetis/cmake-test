@@ -55,4 +55,5 @@ jobs:
       uses: peter-evans/create-or-update-comment@v3
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
-        body: **Python Version Check**: ${{inputs.working-directory}} needs version bump (update)
+        body: |
+          **Python Version Check**: ${{inputs.working-directory}} needs version bump (update)
