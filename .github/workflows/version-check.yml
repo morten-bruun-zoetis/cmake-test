@@ -23,6 +23,8 @@ jobs:
         if [[ -z $(git diff --name-only -r HEAD^1 HEAD | grep setup.py)  ]];
         then
           echo "PYTHON_PACKAGE_VERSION=Did you remember to update the python package version?" >> $GITHUB_ENV;
+        else
+          echo "PYTHON_PACKAGE_VERSION=All good!" >> $GITHUB_ENV;
         fi
 
     - name: Find Comment
@@ -38,12 +40,12 @@ jobs:
       uses: peter-evans/create-or-update-comment@v3
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        body: Create foo
+        body: ${{ env.PYTHON_PACKAGE_VERSION }}
 
     - name: Update comment
       if: steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v3
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        body: Update foo
+        body: ${{ env.PYTHON_PACKAGE_VERSION }}
         edit-mode: replace
