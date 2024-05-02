@@ -22,10 +22,9 @@ jobs:
       uses: dorny/paths-filter@v2
       id: filter
       with:
-        base: master
         filters: |
           changes:
-            - ${{inputs.working-directory}}/setup.py
+            - setup.py
 
     - name: Find Comment
       uses: peter-evans/find-comment@v2
