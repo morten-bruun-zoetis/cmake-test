@@ -22,10 +22,9 @@ jobs:
       uses: dorny/paths-filter@v2
       id: filter
       with:
-        base: master
         filters: |
           changes:
-            - ${{inputs.working-directory}}/setup.py
+            - setup.py
 
     - name: Find Comment
       uses: peter-evans/find-comment@v2
@@ -33,18 +32,28 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         comment-author: 'github-actions[bot]'
-        body-includes: Python version check
+        body-includes: Python Version Check
 
-    - name: Create comment
+    - name: Create comment bad
+      if: steps.filter.outputs.changes == 'false' && steps.fc.outputs.comment-id == ''
+      uses: peter-evans/create-or-update-comment@v3
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          **Python Version Check**: needs version bump
+
+    - name: Create comment good
       if: steps.filter.outputs.changes == 'true' && steps.fc.outputs.comment-id == ''
       uses: peter-evans/create-or-update-comment@v3
       with:
         issue-number: ${{ github.event.pull_request.number }}
-        body: ${{inputs.working-directory}} needs version bump (create)
+        body: |
+          **Python Version Check**: All good
 
     - name: Update comment
-      if: steps.filter.outputs.changes == 'true' && steps.fc.outputs.comment-id != ''
+      if: steps.filter.outputs.changes == 'false' && steps.fc.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v3
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
-        body: ${{inputs.working-directory}} needs version bump (update)
+        body: |
+          **Python Version Check**: ${{inputs.working-directory}} needs version bump (update)
