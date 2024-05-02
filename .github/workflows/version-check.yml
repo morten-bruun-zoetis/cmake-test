@@ -46,4 +46,4 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: ${{ env.PYTHON_PACKAGE_VERSION }}
-	edit-mode: replace
+        edit-mode: replace
